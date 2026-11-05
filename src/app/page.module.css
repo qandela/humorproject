@@ -1,30 +1,120 @@
 .main {
-  display: flex;
-  min-height: 100svh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 32px 24px;
-  text-align: center;
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  padding: 64px 28px 28px;
+}
+
+.header {
+  padding: 32px 0 64px;
 }
 
 .eyebrow {
-  color: #6366f1;
-  font-size: 0.8rem;
+  color: #5145b8;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  margin-bottom: 28px;
 }
 
-.main h1 {
-  font-size: clamp(3rem, 12vw, 7rem);
-  letter-spacing: -0.06em;
-  line-height: 1.1;
+.header h1 {
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
 }
 
-.main > p:last-child {
+.intro {
+  margin-top: 24px;
   color: #526078;
   font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.collectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-top: 28px;
+  border-top: 1px solid #dce0eb;
+}
+
+.collectionHeading h2 {
+  font-size: 1.3rem;
+  letter-spacing: -0.025em;
+}
+
+.collectionHeading span, .footer {
+  color: #526078;
+  font-size: 0.85rem;
   line-height: 1.6;
+}
+
+.grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.card {
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #dce0eb;
+  border-radius: 16px;
+  overflow-wrap: anywhere;
+}
+
+.category {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #efedff;
+  color: #5145b8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+.card p {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #edf0f6;
+  color: #526078;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.notice {
+  padding: 32px;
+  border: 1px solid #dce0eb;
+  border-radius: 16px;
+  background: white;
+  color: #526078;
+  line-height: 1.7;
+}
+
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid #dce0eb;
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .main { padding: 28px 20px; }
+  .header { padding: 24px 0 40px; }
+  .grid { grid-template-columns: 1fr; }
 }
