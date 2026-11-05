@@ -1,80 +1,65 @@
-# The Humor Project — Week 3: Auth Week
+# The Humor Project — Campus to City
 
-For Google OAuth setup, profile-table SQL, photo uploads, protected routes, and the Week 3 submission checklist, follow **[WEEK3_SETUP.md](WEEK3_SETUP.md)**.
+A Next.js app for AI-generated campus and NYC captions. Anyone can browse; Google sign-in is required to generate captions, vote, visit the members lounge, or edit a profile.
 
-The existing Next.js app reads a public joke collection from Supabase and renders a responsive card list at `/`.
+## Week 4 setup
 
-## 1. Create the database
+Follow **[WEEK4_SETUP.md](WEEK4_SETUP.md)** for the database migration, Gemini key, Vercel configuration, verification, and submission checklist.
 
-1. Sign in at https://supabase.com/dashboard and create a project (or open your existing project).
-2. Open **SQL Editor → New query**.
-3. Paste the contents of [`supabase/setup.sql`](supabase/setup.sql) and click **Run**.
-4. Open **Table Editor → jokes** and confirm the six seeded rows exist.
+The PM session has not happened yet. Record and implement actual feedback using **[PM_FEEDBACK.md](PM_FEEDBACK.md)** before claiming the feedback rubric is complete.
 
-The SQL creates the table, enables Row Level Security, and grants anonymous visitors read-only access. It can be run again without duplicating the sample jokes. API writes are not allowed by this setup.
+## Features
 
-## 2. Configure local environment variables
+- Public caption feed with New, Today's best, Top all time, and topic filters.
+- Daily campus/city scene that rotates at New York midnight.
+- Authenticated AI caption creation with an exact saved prompt and model ID.
+- One immutable Funny/Pass vote per user and caption, stored as a new database row.
+- Aggregate scores without public voter identities or other users' full prompts.
+- Per-caption links and a copy-link action for sharing.
+- Protected `/create`, `/members`, and `/profile` routes.
+- Google OAuth, nullable profile names, and private photo uploads from Week 3.
+- Original Supabase joke collection preserved at `/jokes`.
 
-Find the project URL and anon key in the project's **Connect** dialog or **Settings → API / API Keys**. A publishable key also works; do not use a service-role or secret key.
+## Database setup order
 
-Copy `.env.example` to `.env.local` and replace its placeholders:
+In your existing Supabase project's SQL Editor:
 
-```dotenv
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-```
+1. [`supabase/setup.sql`](supabase/setup.sql) — original jokes.
+2. [`supabase/auth-setup.sql`](supabase/auth-setup.sql) — profiles, signup trigger, private avatar storage.
+3. [`supabase/rating-setup.sql`](supabase/rating-setup.sql) — generations, captions, votes, RLS, and owner-checked RPCs.
 
-`.env.local` is ignored by Git. The application reads both values on the server; no project URL or API key is hardcoded.
+The scripts preserve existing app rows when rerun. The Week 4 migration enables RLS on every public table; known application tables receive explicit least-privilege grants and policies.
 
-Install Node.js 22 LTS, then run:
+## Environment variables
+
+Copy `.env.example` to `.env.local` and replace the placeholders. Real values belong only in `.env.local` and the existing Vercel project's environment variables.
+
+| Variable | Purpose |
+| --- | --- |
+| `SUPABASE_URL` | Existing Supabase project origin |
+| `SUPABASE_ANON_KEY` | Existing anon or publishable key |
+| `GEMINI_API_KEY` | Server-only key for AI generation |
+| `GEMINI_MODEL` | Optional model override; defaults to `gemini-3.5-flash` |
+
+Google OAuth client credentials belong in Supabase's Google provider settings. For the Google configuration and `/auth/callback` allowlist, see **[WEEK3_SETUP.md](WEEK3_SETUP.md)**.
+
+## Run and verify
+
+Use Node.js 22 LTS:
 
 ```sh
 npm ci
+npm test
+npm run build
 npm run dev
 ```
 
-Open http://localhost:3000. Restart the dev server after changing environment variables.
-
-## How the database read works
-
-- `src/lib/jokes.ts` queries Supabase's REST Data API at `/rest/v1/jokes`, selecting `id`, `category`, `setup`, and `punchline`, ordered by ID.
-- `src/app/page.tsx` fetches and renders the records at request time inside a Suspense boundary. Requests are not cached, so refreshing after a database edit shows the new content.
-- The page includes loading, missing-configuration, database-error, and empty-table states. It never substitutes hardcoded sample cards for failed database reads.
-- Sample jokes live only in the SQL seed data. They appear on the page only after being retrieved from Supabase.
-
-## Verify
+With the local server running, in a second terminal:
 
 ```sh
-npm test
-npm run build
-npm start
+npm run test:auth
 ```
 
-The tests cover successful reads, query options, missing configuration, empty rows, API failures, network failures, and malformed responses using a mock HTTP response. They do not verify your live Supabase project.
+Tests cover provider-response validation, daily scenes, vote inputs, the actual SQL migrations in a local PostgreSQL-compatible engine, row ownership, private prompts, immutable/unique votes, generation quotas, existing profile behavior, and signed-out route redirects.
 
-For live verification, load `/` with valid environment variables and confirm six joke cards appear. Change a punchline in Supabase's Table Editor, refresh the page, and verify the new text appears. This proves the page reads the database.
-
-If the page shows a connection message, verify both environment variables, the project is active, and the SQL setup has run. If it shows no jokes, check that seed rows and the anonymous SELECT policy exist.
-
-## Deploy and submit
-
-1. Commit and push this app to https://github.com/qandela/humorproject.
-2. Open the existing Vercel project connected to that repository.
-3. Under **Settings → Environment Variables**, add `SUPABASE_URL` and `SUPABASE_ANON_KEY` with the same values as `.env.local`. Enable them for **Production** and **Preview**.
-4. Deploy the latest commit. If the commit deployed before you added variables, redeploy it after saving them.
-5. Wait for **Ready**, visit the deployment, and confirm database rows appear.
-6. Under **Settings → Deployment Protection**, disable Vercel Authentication and any other enabled protection, then save.
-7. Under **Deployments**, select this successful deployment, verify its source commit, and copy its unique generated deployment URL. Avoid the production-domain or branch alias, which can later point to a different commit.
-8. Open that exact URL in an Incognito/Private window and confirm the joke cards load without signing in.
-9. Submit that URL in the course's **Submissions** section.
-
-A build passing without credentials does not verify the database connection. Both rubric requirements require a real Supabase project and a publicly accessible Vercel deployment.
-
-## Documentation
-
-- https://supabase.com/docs/guides/getting-started/quickstarts/nextjs
-- https://supabase.com/docs/guides/api
-- https://supabase.com/docs/guides/database/postgres/row-level-security
-- https://vercel.com/docs/environment-variables
-- https://vercel.com/docs/deployments/generated-urls
-- https://vercel.com/docs/deployment-protection
+A passing build or mocked AI test does not prove live Gemini/Supabase configuration. Generate and vote on a real caption after running the migration and adding the key. Keep Vercel deployment protection disabled, test the final unique deployment URL in Incognito, complete the PM iteration, and submit that exact URL.

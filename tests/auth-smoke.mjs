@@ -7,10 +7,10 @@ async function request(path, options = {}) {
 }
 const publicPage = await request("/");
 assert.equal(publicPage.status, 200);
-assert.match(await publicPage.text(), /A little collection/);
+assert.match(await publicPage.text(), /New York moments/);
 console.log("Public collection is accessible without cookies.");
 
-for (const path of ["/members", "/profile"]) {
+for (const path of ["/members", "/profile", "/create"]) {
   const response = await request(path);
   assert.equal(response.status, 307);
   assert.equal(new URL(response.headers.get("location"), origin).pathname, "/login");

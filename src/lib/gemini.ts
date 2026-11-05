@@ -1,0 +1,51 @@
+export class GenerationError extends Error {
+  reason: "configuration" | "quota" | "upstream" | "output";
+  constructor(reason: "configuration" | "quota" | "upstream" | "output") {
+    super(reason);
+    this.reason = reason;
+  }
+}
+
+export function getGeminiModel() {
+  const model = process.env.GEMINI_MODEL || "gemini-3.5-flash";
+  if (!/^[a-z0-9.-]{1,100}$/.test(model)) throw new GenerationError("configuration");
+  return model;
+}
+
+export async function generateCaption(prompt: string, model: string): Promise<string> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) throw new GenerationError("configuration");
+  let response: Response;
+  try {
+    response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.9,
+          maxOutputTokens: 2048,
+          responseMimeType: "application/json",
+          responseSchema: { type: "OBJECT", properties: { caption: { type: "STRING" } }, required: ["caption"] },
+        },
+      }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(20000),
+    });
+  } catch {
+    throw new GenerationError("upstream");
+  }
+  if (response.status === 429) throw new GenerationError("quota");
+  if (!response.ok) throw new GenerationError("upstream");
+  try {
+    const data = await response.json();
+    const candidate = data.candidates?.[0];
+    if (candidate?.finishReason !== "STOP") throw new Error("Incomplete response");
+    const text = candidate.content?.parts?.filter((part: { text?: string; thought?: boolean }) => !part.thought).map((part: { text?: string }) => part.text ?? "").join("");
+    const parsed = JSON.parse(text ?? "");
+    if (typeof parsed.caption !== "string" || !parsed.caption.trim() || [...parsed.caption.trim()].length > 240) throw new Error("Invalid caption");
+    return parsed.caption.trim();
+  } catch {
+    throw new GenerationError("output");
+  }
+}

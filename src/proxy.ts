@@ -8,7 +8,9 @@ export async function proxy(request: NextRequest) {
   const protectedRoute = request.nextUrl.pathname === "/profile" ||
     request.nextUrl.pathname.startsWith("/profile/") ||
     request.nextUrl.pathname === "/members" ||
-    request.nextUrl.pathname.startsWith("/members/");
+    request.nextUrl.pathname.startsWith("/members/") ||
+    request.nextUrl.pathname === "/create" ||
+    request.nextUrl.pathname.startsWith("/create/");
 
   if (!settings) {
     return protectedRoute
@@ -44,5 +46,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/members/:path*", "/profile/:path*"],
+  matcher: ["/", "/jokes", "/login", "/members/:path*", "/profile/:path*", "/create/:path*"],
 };

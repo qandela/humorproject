@@ -14,7 +14,8 @@ export async function AccountNav() {
     <nav className="account-nav" aria-label="Main navigation">
       <Link className="brand" href="/">The Humor Project</Link>
       <div className="nav-links">
-        <Link href="/">Jokes</Link>
+        <Link href="/">Caption feed</Link>
+        <Link href="/create">Create</Link>
         <Link href="/members">Members lounge</Link>
         {signedIn ? <>
           <Link href="/profile">Profile</Link>

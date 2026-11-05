@@ -78,3 +78,58 @@ button:disabled { cursor: wait; opacity: 0.65; }
   .account-page { padding: 32px 20px; }
   .name-fields { grid-template-columns: 1fr; }
 }
+
+/* Week 4: public caption feed and private creation studio. */
+.daily-brief {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 32px;
+  border: 1px solid #d8d2f4;
+  border-radius: 16px;
+  background: #efedff;
+  margin-bottom: 48px;
+}
+.daily-brief .eyebrow { margin-bottom: 12px; }
+.daily-brief h2 { font-size: 1.6rem; letter-spacing: -0.035em; margin-bottom: 12px; }
+.daily-brief p:not(.eyebrow) { max-width: 620px; color: #413d61; line-height: 1.7; }
+.daily-brief > a { flex-shrink: 0; }
+.caption-section { margin-top: 32px; }
+.feed-tabs, .topic-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.feed-tabs a { text-decoration: none; border-bottom: 2px solid transparent; padding: 8px 0; margin-right: 16px; color: #526078; font-weight: 600; }
+.feed-tabs a[aria-current] { color: #413690; border-color: #5145b8; }
+.topic-tabs { margin-bottom: 28px; }
+.topic-tabs a { padding: 8px 14px; border-radius: 32px; border: 1px solid #dce0eb; font-size: 0.8rem; color: #526078; text-decoration: none; }
+.topic-tabs a[aria-current] { color: white; background: #5145b8; border-color: #5145b8; }
+.caption-grid { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+.caption-card { display: flex; flex-direction: column; min-width: 0; gap: 20px; padding: 28px; border: 1px solid #dce0eb; border-radius: 16px; background: white; overflow-wrap: anywhere; }
+.caption-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; font-size: 0.75rem; color: #526078; }
+.caption-meta > span { margin-bottom: 0; }
+.caption-scene { font-size: 0.85rem; line-height: 1.7; color: #526078; }
+.caption-card h3 { font-size: clamp(1.4rem, 3vw, 1.8rem); line-height: 1.4; letter-spacing: -0.035em; }
+.caption-stats { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; color: #526078; font-size: 0.75rem; margin-top: auto; }
+.vote-buttons { display: flex; gap: 12px; }
+.vote-buttons button { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #b9c1d2; background: white; color: #172033; font-weight: 600; }
+.vote-buttons button:hover:not(:disabled) { background: #efedff; border-color: #5145b8; }
+.vote-buttons button[aria-pressed=true] { color: #413690; border-color: #5145b8; background: #efedff; opacity: 1; }
+.vote-buttons button:disabled { cursor: default; }
+.vote-note { font-size: 0.75rem; color: #526078; line-height: 1.6; margin-top: 10px; }
+.signin-vote { padding: 12px; background: #f7f8fc; border-radius: 8px; font-size: 0.85rem; }
+.caption-share { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; border-top: 1px solid #edf0f6; padding-top: 16px; font-size: 0.75rem; }
+.share-control { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.share-control button { background: transparent; border: none; font-size: 0.75rem; color: #5145b8; text-decoration: underline; text-underline-offset: 4px; }
+.share-control span { color: #526078; }
+.saved-prompt { font-size: 0.75rem; color: #526078; }
+.saved-prompt summary { cursor: pointer; }
+.saved-prompt pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.7; padding-top: 16px; }
+.feed-note { margin-top: 24px; }
+.profile-form textarea, .profile-form select { font: inherit; padding: 12px; border: 1px solid #b9c1d2; border-radius: 8px; background: white; color: #172033; width: 100%; }
+.profile-form textarea { resize: vertical; line-height: 1.7; }
+.scene-help { display: flex; justify-content: space-between; gap: 16px; font-size: 0.75rem; color: #526078; }
+.scene-help span { white-space: nowrap; }
+@media (max-width: 700px) {
+  .daily-brief { flex-direction: column; align-items: flex-start; padding: 24px; gap: 24px; }
+  .caption-grid { grid-template-columns: 1fr; }
+  .caption-card { padding: 24px; }
+}

@@ -15,8 +15,9 @@ async function MembersContent() {
     <h1>You’re in good company.</h1>
     <p>Welcome to the lounge. This space is only available after signing in.</p>
     <p className="form-message">Signed in as {user.email ?? "a Humor Project member"}.</p>
-    <h2>A little insider humor</h2>
-    <p>Why did the developer bring a ladder to work? To reach the next level.</p>
-    <Link className="button" href="/profile">Make yourself at home →</Link>
+    <h2>Bring something to the group chat.</h2>
+    <p>Turn a campus moment into an AI caption, then see what the community thinks.</p>
+    <Link className="button" href="/create">Create a caption →</Link>
+    <Link href="/profile">Edit your profile</Link>
   </section>;
 }
