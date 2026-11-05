@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <header className={styles.header}>
-        <p className={styles.eyebrow}>The Humor Project / Week 02</p>
+        <p className={styles.eyebrow}>The Humor Project / Week 03</p>
         <h1>A little collection<br />of laughs.</h1>
         <p className={styles.intro}>
           Small jokes. Big groans. Find your next favorite below.

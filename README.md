@@ -1,6 +1,8 @@
-# The Humor Project — Week 2: Connecting the Database
+# The Humor Project — Week 3: Auth Week
 
-The existing Week 1 Next.js app now reads a public joke collection from Supabase and renders a responsive card list at `/`.
+For Google OAuth setup, profile-table SQL, photo uploads, protected routes, and the Week 3 submission checklist, follow **[WEEK3_SETUP.md](WEEK3_SETUP.md)**.
+
+The existing Next.js app reads a public joke collection from Supabase and renders a responsive card list at `/`.
 
 ## 1. Create the database
 
