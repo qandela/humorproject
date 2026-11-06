@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseConfig } from "@/lib/supabase/config";
+import { loginPath } from "@/lib/navigation";
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -10,11 +11,14 @@ export async function proxy(request: NextRequest) {
     request.nextUrl.pathname === "/members" ||
     request.nextUrl.pathname.startsWith("/members/") ||
     request.nextUrl.pathname === "/create" ||
-    request.nextUrl.pathname.startsWith("/create/");
+    request.nextUrl.pathname.startsWith("/create/") ||
+    request.nextUrl.pathname === "/my-captions" ||
+    request.nextUrl.pathname.startsWith("/my-captions/");
+  const loginUrl = new URL(loginPath(request.nextUrl.pathname + request.nextUrl.search), request.url);
 
   if (!settings) {
     return protectedRoute
-      ? NextResponse.redirect(new URL("/login", request.url))
+      ? NextResponse.redirect(loginUrl)
       : response;
   }
 
@@ -36,7 +40,7 @@ export async function proxy(request: NextRequest) {
   if (protectedRoute) {
     response.headers.set("Cache-Control", "private, no-store");
     if (!user) {
-      const redirect = NextResponse.redirect(new URL("/login", request.url));
+      const redirect = NextResponse.redirect(loginUrl);
       response.cookies.getAll().forEach(cookie => redirect.cookies.set(cookie));
       redirect.headers.set("Cache-Control", "private, no-store");
       return redirect;
@@ -46,5 +50,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/jokes", "/login", "/members/:path*", "/profile/:path*", "/create/:path*"],
+  matcher: ["/", "/jokes", "/login", "/members/:path*", "/profile/:path*", "/create/:path*", "/my-captions/:path*"],
 };

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { signOut } from "@/app/auth/actions";
+import { NavLink } from "@/components/nav-link";
 
 export async function AccountNav() {
   let signedIn = false;
@@ -12,13 +13,13 @@ export async function AccountNav() {
   }
   return (
     <nav className="account-nav" aria-label="Main navigation">
-      <Link className="brand" href="/">The Humor Project</Link>
+      <Link className="brand" href="/"><span className="brand-mark" aria-hidden="true">c.</span><span>Campus to City<small>The Humor Project</small></span></Link>
       <div className="nav-links">
-        <Link href="/">Caption feed</Link>
-        <Link href="/create">Create</Link>
-        <Link href="/members">Members lounge</Link>
+        <NavLink href="/">The feed</NavLink>
+        <NavLink href="/create">Create</NavLink>
         {signedIn ? <>
-          <Link href="/profile">Profile</Link>
+          <NavLink href="/my-captions">My captions</NavLink>
+          <NavLink href="/profile">Profile</NavLink>
           <form action={signOut}><button className="button secondary" type="submit">Sign out</button></form>
         </> : <Link className="button" href="/login">Sign in</Link>}
       </div>

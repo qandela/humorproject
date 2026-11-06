@@ -45,3 +45,11 @@ test("a network failure is recoverable and does not expose credentials", async (
   mock.method(globalThis, "fetch", async () => { throw new Error("private error"); });
   await assert.rejects(() => generateCaption("prompt", "test-model"), error => error.reason === "upstream" && !error.message.includes("private"));
 });
+
+ test("invalid keys and unavailable models get configuration errors rather than prompting a new scene", async () => {
+  for (const status of [400, 401, 403, 404]) {
+    mock.method(globalThis, "fetch", async () => new Response("private provider details", { status }));
+    await assert.rejects(() => generateCaption("prompt", "test-model"), error => error.reason === "configuration");
+    mock.restoreAll();
+  }
+});

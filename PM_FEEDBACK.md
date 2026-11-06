@@ -1,26 +1,21 @@
-# PM feedback log — Week 4
+# Week 5 iteration review
 
-Status: The feedback session has not happened yet. No PM feedback has been implemented or claimed.
+## Provenance
 
-The current product decisions are described in [WEEK4_SETUP.md](WEEK4_SETUP.md). They are working assumptions for the session.
+The user asked to continue using invented suggestions instead of a real feedback session. The suggestions below are explicitly **hypothetical usability feedback**, created to guide this iteration. They are not attributed to a real PM or classmate, and no completed feedback session is claimed.
 
-## Ask the PM to try
+## Hypothetical suggestions and changes
 
-1. Find today's scene and generate a caption from it.
-2. Rate a caption and explain what the selected vote means.
-3. Find the highest-rated caption for a topic.
-4. Share a caption with someone who is signed out.
+| Hypothetical user suggestion | Resulting change | How it is checked |
+| --- | --- | --- |
+| “I want to find the captions I made without searching the whole feed.” | Added a private My captions collection with published captions and unfinished attempts. | Browser fixture checks saved history; PostgreSQL tests enforce owner-only request reads. |
+| “After signing in, take me back to the caption I was rating.” | The login flow retains a validated internal destination in an HttpOnly cookie. The OAuth callback remains exactly `/auth/callback`. | Return-path unit tests reject external URLs; auth/browser checks verify retained destinations. |
+| “Let me try another angle on a scene that already works.” | Added Remix this scene to public captions and Reuse this scene to private history. | Browser checks confirm scene/topic/tone are populated correctly. |
+| “I want the actual caption text for my group chat, not only a website link.” | Added separate Copy text and Copy link controls with feedback. | Chrome clipboard check. |
+| “Does Pass skip the card or count against it?” | Replaced Pass with Not quite, displayed +1/−1, and explained that one final vote is saved per caption. | Browser checks vote persistence and disabled saved-vote controls; SQL tests reject duplicate votes. |
+| “I don’t want to lose my scene and mood when generation fails.” | Controlled scene/topic/tone inputs preserve edits, with clearer failure messages and remaining-attempt information. | Browser simulates a reservation error and checks all form values remain. |
+| “The layout should be easier to scan on my phone.” | Refined typography, spacing, contrast, navigation, mobile cards, and the single-caption view. | Desktop/mobile screenshots and horizontal-overflow checks. |
 
-## Record after the session
+## Actual feedback still to collect
 
-For each suggestion, record:
-
-- Date and PM name:
-- Exact feedback:
-- User problem observed:
-- Agreed change:
-- Implementation files and commit:
-- Verification performed:
-- PM follow-up, if available:
-
-The feedback section remains unfinished until the actual suggestions have been implemented and verified.
+During the real session, ask the PM or classmates to create a caption, vote, find a past creation, and share a caption. Record their exact feedback here, then add the agreed change, implementation commit, and verification. Replace assumptions only with feedback that actually occurred.

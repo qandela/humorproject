@@ -2,11 +2,15 @@
 
 A Next.js app for AI-generated campus and NYC captions. Anyone can browse; Google sign-in is required to generate captions, vote, visit the members lounge, or edit a profile.
 
+## Week 5 iteration
+
+Follow **[WEEK5_SETUP.md](WEEK5_SETUP.md)** for the iteration details, verification, and final deployment checklist. No new SQL migration is needed. Hypothetical feedback is clearly labeled in **[PM_FEEDBACK.md](PM_FEEDBACK.md)**.
+
 ## Week 4 setup
 
 Follow **[WEEK4_SETUP.md](WEEK4_SETUP.md)** for the database migration, Gemini key, Vercel configuration, verification, and submission checklist.
 
-The PM session has not happened yet. Record and implement actual feedback using **[PM_FEEDBACK.md](PM_FEEDBACK.md)** before claiming the feedback rubric is complete.
+The feedback log distinguishes hypothetical review suggestions from actual PM feedback.
 
 ## Features
 
@@ -15,8 +19,9 @@ The PM session has not happened yet. Record and implement actual feedback using 
 - Authenticated AI caption creation with an exact saved prompt and model ID.
 - One immutable Funny/Pass vote per user and caption, stored as a new database row.
 - Aggregate scores without public voter identities or other users' full prompts.
-- Per-caption links and a copy-link action for sharing.
-- Protected `/create`, `/members`, and `/profile` routes.
+- Per-caption links, copy-text/copy-link controls, and scene remixing.
+- Private My captions history and sign-in that restores the intended destination.
+- Protected `/create`, `/my-captions`, `/members`, and `/profile` routes.
 - Google OAuth, nullable profile names, and private photo uploads from Week 3.
 - Original Supabase joke collection preserved at `/jokes`.
 

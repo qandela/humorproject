@@ -8,6 +8,7 @@
     "start": "next start",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "test:auth": "node tests/auth-smoke.mjs",
+    "test:ui": "node tests/ui-smoke.mjs",
     "lint": "eslint"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "playwright": "^1.65.0",
     "typescript": "^5"
   }
 }

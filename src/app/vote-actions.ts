@@ -7,7 +7,7 @@ import { parseVote } from "@/lib/captions";
 export type VoteState = { error?: string; value?: number; message?: string };
 
 export async function castVote(_previous: VoteState, data: FormData): Promise<VoteState> {
-  const { supabase, user } = await requireUser();
+  const { supabase, user } = await requireUser("/");
   const vote = parseVote(data);
   if (!vote) return { error: "Choose a valid caption and vote." };
   const { error } = await supabase.from("votes").insert({ user_id: user.id, caption_id: vote.captionId, value: vote.value });

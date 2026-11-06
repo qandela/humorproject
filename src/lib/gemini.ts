@@ -36,6 +36,7 @@ export async function generateCaption(prompt: string, model: string): Promise<st
     throw new GenerationError("upstream");
   }
   if (response.status === 429) throw new GenerationError("quota");
+  if ([400, 401, 403, 404].includes(response.status)) throw new GenerationError("configuration");
   if (!response.ok) throw new GenerationError("upstream");
   try {
     const data = await response.json();

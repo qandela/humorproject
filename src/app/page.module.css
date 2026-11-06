@@ -1,11 +1,11 @@
 .main {
-  width: min(1080px, 100%);
+  width: min(1240px, 100%);
   margin: 0 auto;
-  padding: 64px 28px 28px;
+  padding: 48px 36px 28px;
 }
 
 .header {
-  padding: 32px 0 64px;
+  padding: 0;
 }
 
 .eyebrow {
@@ -18,16 +18,16 @@
 }
 
 .header h1 {
-  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-size: clamp(2.6rem, 4.4vw, 4.2rem);
   font-weight: 700;
   letter-spacing: -0.055em;
   line-height: 1.05;
 }
 
 .intro {
-  margin-top: 24px;
+  margin-top: 22px;
   color: #526078;
-  font-size: 1.1rem;
+  font-size: 0.88rem;
   line-height: 1.7;
   margin-bottom: 24px;
 }
@@ -39,18 +39,17 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 24px;
-  padding-top: 28px;
-  border-top: 1px solid #dce0eb;
+  padding-top: 12px;
 }
 
 .collectionHeading h2 {
-  font-size: 1.3rem;
+  font-size: 2rem;
   letter-spacing: -0.025em;
 }
 
 .collectionHeading span, .footer {
   color: #526078;
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   line-height: 1.6;
 }
 
@@ -105,8 +104,12 @@
 }
 
 .footer {
-  margin-top: 64px;
-  padding-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 72px;
+  padding: 26px 0;
   border-top: 1px solid #dce0eb;
 }
 
@@ -115,11 +118,15 @@
 }
 
 @media (max-width: 600px) {
-  .main { padding: 28px 20px; }
-  .header { padding: 24px 0 40px; }
+  .main { padding: 30px 24px 18px; }
+  .header { padding: 0; }
   .grid { grid-template-columns: 1fr; }
 }
 
 .notice h3 { margin-bottom: 12px; color: #172033; }
 .notice p { margin-bottom: 24px; }
 .footer a { display: inline-block; margin-left: 12px; }
+
+.header h1 em { font-family: Georgia, serif; font-weight: 400; color: #6240b8; letter-spacing: -0.06em; }
+.collectionHeading .eyebrow { margin-bottom: 10px; font-size: .61rem; }
+@media (max-width: 760px) { .header h1 { font-size: clamp(2.55rem, 8vw, 3.6rem); } }

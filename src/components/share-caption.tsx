@@ -2,19 +2,19 @@
 
 import { useState } from "react";
 
-export function ShareCaption({ id }: { id: string }) {
+export function ShareCaption({ id, content }: { id: string; content: string }) {
   const [message, setMessage] = useState("");
-  async function copy() {
-    const link = new URL(`/?caption=${id}`, window.location.origin).toString();
+  async function copy(kind: "caption" | "link") {
+    const text = kind === "caption" ? content : new URL(`/?caption=${id}`, window.location.origin).toString();
     try {
-      await navigator.clipboard.writeText(link);
-      setMessage("Link copied");
+      await navigator.clipboard.writeText(text);
+      setMessage(kind === "caption" ? "Caption copied" : "Link copied");
     } catch {
-      setMessage("Open the caption link to copy its address.");
+      setMessage("Copy isn’t available here. Open the caption to select its text.");
     }
   }
   return <div className="share-control">
-    <button type="button" onClick={copy}>Copy link ↗</button>
-    {message && <span role="status">{message}</span>}
+    <div className="copy-buttons"><button type="button" onClick={() => copy("caption")}>Copy text</button><button type="button" onClick={() => copy("link")}>Copy link ↗</button></div>
+    <span className="copy-feedback" role="status">{message}</span>
   </div>;
 }

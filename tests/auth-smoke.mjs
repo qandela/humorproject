@@ -10,10 +10,11 @@ assert.equal(publicPage.status, 200);
 assert.match(await publicPage.text(), /New York moments/);
 console.log("Public collection is accessible without cookies.");
 
-for (const path of ["/members", "/profile", "/create"]) {
+for (const path of ["/members", "/profile", "/create", "/my-captions"]) {
   const response = await request(path);
   assert.equal(response.status, 307);
   assert.equal(new URL(response.headers.get("location"), origin).pathname, "/login");
+  assert.equal(new URL(response.headers.get("location"), origin).searchParams.get("returnTo"), path);
   assert.doesNotMatch(await response.text(), /Signed in as/);
   console.log(`${path} requires login.`);
 }
@@ -34,6 +35,7 @@ const action = loginHtml.match(/name="(\$ACTION_ID_[^"]+)"/);
 assert.ok(action, "The Google sign-in form must exist.");
 const form = new FormData();
 form.set(action[1], "");
+form.set("return_to", "/my-captions");
 const oauth = await request("/login", { method: "POST", headers: { Origin: origin }, body: form });
 assert.equal(oauth.status, 303);
 const target = new URL(oauth.headers.get("location"));
@@ -42,5 +44,6 @@ assert.equal(target.searchParams.get("provider"), "google");
 assert.equal(target.searchParams.get("redirect_to"), `${origin}/auth/callback`);
 assert.ok(target.searchParams.get("code_challenge"));
 assert.ok(oauth.headers.get("set-cookie"));
+assert.match(oauth.headers.get("set-cookie"), /humor-return-to/);
 console.log("Google OAuth starts with PKCE and exactly /auth/callback.");
 console.log("Auth smoke checks passed. Real Google login and profile persistence require manual account setup and verification.");
