@@ -12,7 +12,13 @@ export function getGeminiModel() {
   return model;
 }
 
+export type CaptionResult = { content: string; inputTokens: number | null; outputTokens: number | null };
+
 export async function generateCaption(prompt: string, model: string): Promise<string> {
+  return (await generateCaptionResult(prompt, model)).content;
+}
+
+export async function generateCaptionResult(prompt: string, model: string): Promise<CaptionResult> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new GenerationError("configuration");
   let response: Response;
@@ -45,7 +51,8 @@ export async function generateCaption(prompt: string, model: string): Promise<st
     const text = candidate.content?.parts?.filter((part: { text?: string; thought?: boolean }) => !part.thought).map((part: { text?: string }) => part.text ?? "").join("");
     const parsed = JSON.parse(text ?? "");
     if (typeof parsed.caption !== "string" || !parsed.caption.trim() || [...parsed.caption.trim()].length > 240) throw new Error("Invalid caption");
-    return parsed.caption.trim();
+    const tokenCount = (value: unknown) => typeof value === "number" && Number.isSafeInteger(value) && value >= 0 && value <= 2147483647 ? value : null;
+    return { content: parsed.caption.trim(), inputTokens: tokenCount(data.usageMetadata?.promptTokenCount), outputTokens: tokenCount(data.usageMetadata?.candidatesTokenCount) };
   } catch {
     throw new GenerationError("output");
   }

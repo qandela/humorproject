@@ -53,3 +53,12 @@ test("a network failure is recoverable and does not expose credentials", async (
     mock.restoreAll();
   }
 });
+
+test("observability preserves provider usage counts without inventing missing metrics", async () => {
+  const { generateCaptionResult } = await import("../src/lib/gemini.ts");
+  mock.method(globalThis, "fetch", async () => Response.json({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify({ caption: "A real output in a mocked provider response." }) }] } }], usageMetadata: { promptTokenCount: 42, candidatesTokenCount: 13 } }));
+  assert.deepEqual(await generateCaptionResult("exact prompt", "test-model"), { content: "A real output in a mocked provider response.", inputTokens: 42, outputTokens: 13 });
+  mock.restoreAll();
+  mock.method(globalThis, "fetch", async () => result("No token metadata supplied."));
+  assert.deepEqual(await generateCaptionResult("exact prompt", "test-model"), { content: "No token metadata supplied.", inputTokens: null, outputTokens: null });
+});

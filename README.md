@@ -68,3 +68,9 @@ npm run test:auth
 Tests cover provider-response validation, daily scenes, vote inputs, the actual SQL migrations in a local PostgreSQL-compatible engine, row ownership, private prompts, immutable/unique votes, generation quotas, existing profile behavior, and signed-out route redirects.
 
 A passing build or mocked AI test does not prove live Gemini/Supabase configuration. Generate and vote on a real caption after running the migration and adding the key. Keep Vercel deployment protection disabled, test the final unique deployment URL in Incognito, complete the PM iteration, and submit that exact URL.
+
+## Week 7 generation observability
+
+The rating app now uses `reserve_observed_generation` and `finish_observed_generation` from the admin repository's `supabase/observability-setup.sql`. Run that migration in the existing Supabase project after the Week 6 admin migration. It records the sampled prompt chain, exact composed prompt, response/failure category, elapsed time, and provider-reported token counts. Existing voting and ownership rules remain in place. Until the new reservation RPC exists, the original generation workflow remains available.
+
+The admin repository documents the schema, private resource management, and migration steps: https://github.com/qandela/humorproject-admin/blob/main/WEEK7.md . Keep API keys in environment variables; the model/provider catalog does not store secrets or change the executable model selected by `GEMINI_MODEL`.
